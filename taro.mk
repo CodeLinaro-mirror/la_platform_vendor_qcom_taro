@@ -204,7 +204,6 @@ BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 
-$(call inherit-product, build/make/target/product/gsi_keys.mk)
 
 BOARD_HAVE_BLUETOOTH := false
 BOARD_HAVE_QCOM_FM := false
@@ -379,7 +378,7 @@ DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
 ifneq (,$(wildcard $(QCPATH)/chi-cdk))
 include $(QCPATH)/chi-cdk/configs/camera_techpack.mk
 else ifneq (,$(wildcard $(QCPATH)/camx/chi-cdk))
-include $(QCPATH)/camx/chi-cdk/configs/camera_techpack.mk)
+include $(QCPATH)/camx/chi-cdk/configs/camera_techpack.mk
 endif
 
 #Audio DLKM
@@ -431,32 +430,10 @@ PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 BOARD_SYSTEMSDK_VERSIONS := 31
 
-DISABLED_VSDK_SNAPSHOTS_LIST := $(subst $(comma),$(space),$(DISABLED_VSDK_SNAPSHOTS))
-
 ifeq (true,$(BUILDING_WITH_VSDK))
     ALLOW_MISSING_DEPENDENCIES := true
     TARGET_SKIP_CURRENT_VNDK := true
-
-    ifneq (,$(filter vendor,$(DISABLED_VSDK_SNAPSHOTS_LIST)))
-        # Vendor snapshot is disabled with VSDK
-        BOARD_VNDK_VERSION := current
-    else
-        BOARD_VNDK_VERSION := 33
-    endif
-
-    ifneq (,$(filter recovery,$(DISABLED_VSDK_SNAPSHOTS_LIST)))
-        # Recovery snapshot is disabled with VSDK
-        RECOVERY_SNAPSHOT_VERSION := current
-    else
-        RECOVERY_SNAPSHOT_VERSION := 33
-    endif
-
-    ifneq (,$(filter ramdisk,$(DISABLED_VSDK_SNAPSHOTS_LIST)))
-        # Ramdisk snapshot is disabled with VSDK
-        RAMDISK_SNAPSHOT_VERSION := current
-    else
-        RAMDISK_SNAPSHOT_VERSION := 33
-    endif
+    -include vendor/qcom/vsdk_snapshots_config/config.mk
 else
     BOARD_VNDK_VERSION := current
     RECOVERY_SNAPSHOT_VERSION := current
