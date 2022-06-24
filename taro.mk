@@ -143,15 +143,6 @@ endif
 #Suppot to compile recovery without msm headers
 TARGET_HAS_GENERIC_KERNEL_HEADERS := true
 
-# Enable USB detection in QMAA mode
-ifeq ($(TARGET_USES_QMAA),true)
-ifeq ($(TARGET_USES_QMAA_RECOMMENDED_BOOT_CONFIG),true)
-PRODUCT_PACKAGES += init.qti.usb.qmaa.rc
-# Enable USB in adb-only configuration
-PRODUCT_PROPERTY_OVERRIDES += persist.vendor.usb.config=adb
-endif
-endif
-
 CLEAN_UP_JAVA_IN_VENDOR ?= enforcing
 
 JAVA_IN_VENDOR_SOONG_WHITE_LIST :=\
