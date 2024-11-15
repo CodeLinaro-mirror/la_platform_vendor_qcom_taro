@@ -199,7 +199,9 @@ BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 
+ifneq ($(PLATFORM_VERSION), 13)
 $(call inherit-product, build/make/target/product/gsi_keys.mk)
+endif
 
 BOARD_HAVE_BLUETOOTH := false
 BOARD_HAVE_QCOM_FM := false
@@ -466,6 +468,10 @@ PRODUCT_BOOT_JARS += telephony-ext
 PRODUCT_PACKAGES += telephony-ext
 
 PRODUCT_ENABLE_QESDK := true
+
+ifeq ($(PLATFORM_VERSION), 13)
+NEED_AIDL_NDK_PLATFORM_BACKEND := true
+endif
 
 # Vendor property to enable advanced network scanning
 PRODUCT_PROPERTY_OVERRIDES += \
