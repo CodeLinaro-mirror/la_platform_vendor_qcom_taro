@@ -469,8 +469,13 @@ PRODUCT_PACKAGES += telephony-ext
 
 PRODUCT_ENABLE_QESDK := true
 
+SOONG_CONFIG_NAMESPACES += qfp
+SOONG_CONFIG_qfp += qfptargets
+SOONG_CONFIG_qfp_qfptargets := qfpaidlV1platformtarget
+
 ifeq ($(PLATFORM_VERSION), 13)
 NEED_AIDL_NDK_PLATFORM_BACKEND := true
+$(call soong_config_set, qfp, qfptargets, qfpaidlV2target)
 endif
 
 # Vendor property to enable advanced network scanning
